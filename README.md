@@ -12,7 +12,7 @@ crear.js      → lógica de index.html (contador, vista previa, generar enlace)
 tarjeta.js    → lógica de tarjeta.html (lee la URL y muestra la tarjeta)
 ```
 
-La idea central del proyecto es `tarjeta.html`: una tarjeta digital, no una página con un formulario. `index.html` es solo el taller donde se arma esa tarjeta antes de enviarla.
+La idea central del proyecto es entregar una tarjeta digital, en este caso si no tienes nigun conocimiento de HTML puedes crear tu tarjeta igualmente gracias al `index.js` que es el corazon o el taller.
 
 ## Cómo funciona
 

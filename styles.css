@@ -55,6 +55,28 @@ body::before {
     0 0,
     13px 17px;
 }
+.top {
+  position: relative;
+  z-index: 10;
+}
+
+.top .wrap {
+  display: flex;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.brand svg {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+}
 h1,
 h2,
 h3 {

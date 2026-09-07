@@ -86,8 +86,9 @@
     if (msgInput.value.trim()) params.set("msg", msgInput.value.trim());
     params.set("flor", selectedFlower());
 
-    var base = window.location.href.replace(/index\.html?$/i, "").replace(/\/$/, "") + "/tarjeta.html";
-    return base + "?" + params.toString();
+    var target = new URL("tarjeta.html", window.location.href);
+    target.search = params.toString();
+    return target.toString();
   }
 
   var feedback = document.getElementById("copy-feedback");

@@ -18,7 +18,9 @@
 html{ scroll-behavior: smooth; }
 body{
   margin: 0;
-  background: var(--green-deep);
+  background-color: var(--green-deep);
+  background-image: radial-gradient(rgba(247, 239, 225, 0.05) 1px, transparent 1px);
+  background-size: 22px 22px;
   color: var(--text-onDark);
   font-family: 'Karla', sans-serif;
   font-size: 1.05rem;
@@ -72,14 +74,27 @@ nav.top{ padding: 28px 0 4px; }
 
 /* ---------- HERO ---------- */
 .hero{ padding: 56px 0 40px; text-align: center; }
-.hero-flower{ width: 128px; height: 128px; margin: 0 auto 28px; }
+.hero-flower{ width: 108px; margin: 0 auto 20px; }
+.hero-flower svg{ width: 100%; height: auto; }
 @media (prefers-reduced-motion: no-preference){
-  .hero-flower{ animation: sway 7s ease-in-out infinite; transform-origin: 50% 85%; }
+  .hero-flower{ animation: sway 7s ease-in-out infinite; transform-origin: 50% 100%; }
 }
 @keyframes sway{
   0%, 100% { transform: rotate(-3deg); }
   50% { transform: rotate(3deg); }
 }
+
+/* ---------- GUIRNALDA DECORATIVA ---------- */
+.garland{
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 16px;
+  margin: 4px 0 30px;
+  opacity: 0.9;
+}
+.garland svg{ width: 30px; height: auto; }
+.garland svg:nth-child(2){ width: 38px; }
 .hero h1{
   font-size: clamp(1.9rem, 4.4vw, 2.9rem);
   max-width: 15ch;
@@ -141,7 +156,8 @@ nav.top{ padding: 28px 0 4px; }
   border-radius: 16px 4px 16px 4px;
   pointer-events: none;
 }
-.card-flower{ width: 64px; height: 64px; margin: 0 auto 18px; position: relative; z-index: 1; }
+.card-flower{ width: 78px; margin: 0 auto 14px; position: relative; z-index: 1; }
+.card-flower svg{ width: 100%; height: auto; }
 .card-to{
   font-family: 'Fraunces', serif;
   font-size: 1.3rem;
@@ -186,6 +202,7 @@ nav.top{ padding: 28px 0 4px; }
   align-items: center;
   justify-content: center;
   padding: 32px 20px;
+  position: relative;
 }
 .tarjeta-page .card{
   width: 100%;
@@ -194,6 +211,8 @@ nav.top{ padding: 28px 0 4px; }
 .tarjeta-footer{
   margin-top: 28px;
   text-align: center;
+  opacity: 0;
+  animation: footer-in 0.6s ease-out 0.3s forwards;
 }
 .tarjeta-footer a{
   font-size: 0.88rem;
@@ -201,6 +220,57 @@ nav.top{ padding: 28px 0 4px; }
   text-decoration: none;
 }
 .tarjeta-footer a:hover{ color: var(--yellow-soft); text-decoration: underline; }
+@keyframes footer-in{ to{ opacity: 1; } }
+
+/* Estado inicial de la tarjeta mientras corre la animación de apertura */
+.card.card-pending{ opacity: 0; transform: translateY(18px) scale(0.97); }
+.card.card-reveal{
+  animation: card-in 0.75s cubic-bezier(.2,.8,.3,1) forwards;
+}
+@keyframes card-in{
+  to{ opacity: 1; transform: none; }
+}
+
+/* Campo de flores que crecen, florecen y se abren para dejar ver la tarjeta */
+.bloom-stage{
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  overflow: hidden;
+  pointer-events: none;
+}
+.stage-anchor{
+  position: absolute;
+  bottom: -8px;
+  width: var(--w, 80px);
+  transform: translateX(-50%);
+}
+.stage-flower{
+  transform: rotate(var(--rot, 0deg));
+  transform-origin: bottom center;
+  transition: transform 0.7s cubic-bezier(.55,0,.85,.35), opacity 0.7s ease-in;
+}
+.stage-flower svg{ width: 100%; height: auto; display: block; }
+.stage-flower .grow{
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: bottom center;
+  animation: stem-grow 0.9s cubic-bezier(.34,1.4,.64,1) forwards;
+  animation-delay: var(--delay, 0s);
+}
+.stage-flower.leaving{
+  transform: translate(var(--tx, 0), -16px) rotate(var(--rot, 0deg)) scale(0.72);
+  opacity: 0;
+}
+@keyframes stem-grow{
+  0%   { transform: scaleY(0); opacity: 0; }
+  65%  { transform: scaleY(1.08); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce){
+  .bloom-stage{ display: none; }
+  .card.card-pending{ opacity: 1; transform: none; }
+}
 
 /* ---------- CREADOR ---------- */
 .creator{ padding: 12px 0 64px; border-top: 1px solid var(--green-line); margin-top: 8px; }
@@ -272,7 +342,8 @@ fieldset.flower-field legend{
   background: var(--green-panel);
   transition: border-color 0.15s ease, background 0.15s ease;
 }
-.flower-option .chip svg{ width: 30px; height: 30px; }
+.flower-option .chip{ padding-top: 12px; }
+.flower-option .chip svg{ width: 30px; height: auto; }
 .flower-option .chip span{
   font-size: 0.76rem;
   color: var(--text-onDark-muted);

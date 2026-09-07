@@ -17,6 +17,8 @@
         var delay = Math.random() * 1.2;
         var drift = (Math.random() * 60 - 30).toFixed(0) + "px";
         petal.style.left = left + "%";
+        petal.style.setProperty("--size", (0.7 + Math.random() * 0.75).toFixed(2));
+        petal.style.transform = "rotate(" + Math.round(Math.random() * 360) + "deg)";
         petal.style.setProperty("--drift", drift);
         petal.style.animationDuration = duration + "s";
         petal.style.animationDelay = delay + "s";

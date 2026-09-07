@@ -87,7 +87,7 @@ textarea:focus-visible {
   outline-offset: 3px;
 }
 .wrap {
-  max-width: 250px;
+  max-width: var(--max-content);
   margin: 0 auto;
   padding: 0 24px;
 }

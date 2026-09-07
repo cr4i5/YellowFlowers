@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var VALID_FLOWERS = ["girasol", "margarita", "tulipan", "rosa"];
+  var VALID_FLOWERS = ["girasol", "tulipan", "rosa", "orquidea"];
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function spawnPetals (layerId, count) {

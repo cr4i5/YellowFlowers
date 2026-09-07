@@ -8,32 +8,27 @@
     if (reduceMotion) return;
     var layer = document.getElementById(layerId);
     if (!layer) return;
+
     for (var i = 0; i < count; i++) {
       (function () {
         var petal = document.createElement("span");
         petal.className = "petal";
-        var left = Math.random() * 90 + 3;
-        var duration = 3.5 + Math.random() * 2.5;
-        var delay = Math.random() * 1.2;
-        var drift = (Math.random() * 60 - 30).toFixed(0) + "px";
-        petal.style.left = left + "%";
-        petal.style.setProperty("--size", (0.7 + Math.random() * 0.75).toFixed(2));
-        petal.style.transform = "rotate(" + Math.round(Math.random() * 360) + "deg)";
-        petal.style.setProperty("--drift", drift);
-        petal.style.animationDuration = duration + "s";
-        petal.style.animationDelay = delay + "s";
-        petal.addEventListener("animationend", function () { petal.remove(); });
+        petal.style.left = (Math.random() * 94 + 3) + "%";
+        petal.style.setProperty("--drift", ((Math.random() * 70) - 35).toFixed(0) + "px");
+        petal.style.animationDuration = (3.5 + Math.random() * 2.5) + "s";
+        petal.style.animationDelay = (Math.random() * 1.2) + "s";
         layer.appendChild(petal);
+        petal.addEventListener("animationend", function () { petal.remove(); });
       })();
     }
   }
 
-  /* ---------- Leer los datos del enlace ---------- */
   var params = new URLSearchParams(window.location.search);
   var to = params.get("to");
   var msg = params.get("msg");
   var from = params.get("from");
   var flor = params.get("flor");
+
   if (!flor || VALID_FLOWERS.indexOf(flor) === -1) flor = "girasol";
 
   document.getElementById("c-to").textContent = to || "ti";
@@ -44,60 +39,61 @@
 
   var card = document.getElementById("card");
 
-  /* ---------- Sin animación: mostrar la tarjeta directo ---------- */
+  /* ---------- Campo de flores ---------- */
+  var meadow = document.getElementById("flower-meadow");
+
+  var meadowLayout = [
+    [3, 62, -7, 0.1, 0.0],
+    [10, 90, -4, 0.8, 0.3],
+    [17, 55, 7, 0.55, 0.7],
+    [25, 76, -8, 0.35, 0.2],
+    [34, 50, 5, 0.9, 0.9],
+    [43, 86, -5, 0.45, 0.1],
+    [52, 58, 7, 0.75, 0.6],
+    [61, 96, -6, 0.25, 0.2],
+    [70, 55, 6, 0.65, 0.8],
+    [78, 82, -7, 0.15, 0.4],
+    [87, 60, 5, 0.9, 0.1],
+    [95, 88, -4, 0.35, 0.7],
+    [6, 115, -9, 0.15, 0.1],
+    [29, 105, 7, 0.75, 0.3],
+    [72, 112, -6, 0.55, 0.5],
+    [91, 108, 8, 0.85, 0.2]
+  ];
+
+  meadowLayout.forEach(function (item, index) {
+    var flower = document.createElement("div");
+    flower.className = "meadow-flower";
+    flower.style.left = item[0] + "%";
+    flower.style.setProperty("--flower-w", item[1] + "px");
+    flower.style.setProperty("--flower-rot", item[2] + "deg");
+    flower.style.setProperty("--wind-delay", item[3] + "s");
+    flower.style.setProperty("--rise-delay", (item[4] + index * 0.025).toFixed(2) + "s");
+    flower.style.setProperty("--depth", index % 3 === 0 ? "0.42" : (index % 3 === 1 ? "0.65" : "0.85"));
+
+    var chosen = index % 4;
+    var flowerName = VALID_FLOWERS[chosen];
+
+    flower.innerHTML =
+      '<div class="meadow-flower-inner">' +
+        '<svg viewBox="0 0 200 320" aria-hidden="true">' +
+          '<use href="#flor-' + flowerName + '"></use>' +
+        '</svg>' +
+      '</div>';
+
+    meadow.appendChild(flower);
+  });
+
+  /* ---------- Tarjeta ---------- */
   if (reduceMotion) {
     card.classList.remove("card-pending");
     return;
   }
 
-  /* ---------- Campo de flores que crecen, florecen y se abren ---------- */
-  var stage = document.getElementById("bloom-stage");
-
-  var layout = [
-    { left: "8%",  w: 62, rot: -10, delay: 0,    tx: "-160px" },
-    { left: "27%", w: 80, rot: -4,  delay: 130,  tx: "-140px" },
-    { left: "50%", w: 100, rot: 0,  delay: 260,  tx: "0" },
-    { left: "73%", w: 80, rot: 4,   delay: 130,  tx: "140px" },
-    { left: "92%", w: 62, rot: 10,  delay: 0,    tx: "160px" }
-  ];
-
-  var flowers = layout.map(function (spot) {
-    var anchor = document.createElement("div");
-    anchor.className = "stage-anchor";
-    anchor.style.left = spot.left;
-    anchor.style.setProperty("--w", spot.w + "px");
-
-    var el = document.createElement("div");
-    el.className = "stage-flower";
-    el.style.setProperty("--rot", spot.rot + "deg");
-    el.style.setProperty("--tx", spot.tx);
-
-    var grow = document.createElement("div");
-    grow.className = "grow";
-    grow.style.animationDelay = spot.delay + "ms";
-    grow.innerHTML = '<svg viewBox="0 0 200 320" aria-hidden="true"><use href="#flor-' + flor + '"></use></svg>';
-
-    el.appendChild(grow);
-    anchor.appendChild(el);
-    stage.appendChild(anchor);
-    return el;
-  });
-
-  stage.hidden = false;
-
-  var GROW_END = 260 + 900;   // último delay + duración del crecimiento
-  var HOLD = 350;             // pausa breve con las flores abiertas
-  var LEAVE_DURATION = 700;
-
-  setTimeout(function () {
-    flowers.forEach(function (el) { el.classList.add("leaving"); });
-  }, GROW_END + HOLD);
-
-  setTimeout(function () {
-    stage.hidden = true;
+  window.setTimeout(function () {
     card.classList.remove("card-pending");
     card.classList.add("card-reveal");
-    spawnPetals("petals", 14);
-  }, GROW_END + HOLD + LEAVE_DURATION);
+    spawnPetals("petals", 18);
+  }, 280);
 
 })();

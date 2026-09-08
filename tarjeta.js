@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var VALID_FLOWERS = ["girasol", "tulipan", "rosa", "orquidea"];
+  var VALID_FLOWERS = ["girasol", "margarita", "tulipan", "orquidea"];
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function spawnPetals (layerId, count) {
@@ -90,10 +90,21 @@
     return;
   }
 
+  // La tarjeta debe aparecer solo cuando el prado terminó de crecer,
+  // nunca antes. Se calcula a partir de los mismos tiempos usados arriba
+  // en vez de dejar un número fijo suelto que se puede desincronizar.
+  var RISE_DURATION = 1100;   // debe coincidir con "meadow-rise" en styles.css
+  var maxRiseDelay = 0;
+  meadowLayout.forEach(function (item, index) {
+    var riseDelay = (item[4] + index * 0.025) * 1000;
+    if (riseDelay > maxRiseDelay) maxRiseDelay = riseDelay;
+  });
+  var REVEAL_DELAY = maxRiseDelay + RISE_DURATION + 150;
+
   window.setTimeout(function () {
     card.classList.remove("card-pending");
     card.classList.add("card-reveal");
     spawnPetals("petals", 18);
-  }, 280);
+  }, REVEAL_DELAY);
 
 })();

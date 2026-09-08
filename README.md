@@ -16,7 +16,7 @@ La idea central del proyecto es `tarjeta.html`: una tarjeta digital, no una pág
 
 ## Cómo funciona
 
-1. En `index.html`, la persona escribe el destinatario, el remitente, un mensaje y elige una flor (girasol, margarita, tulipán o rosa).
+1. En `index.html`, la persona escribe el destinatario, el remitente, un mensaje y elige una flor (girasol, margarita, tulipán u orquídea).
 2. Al presionar "Copiar enlace", se arma una URL hacia `tarjeta.html` con esos datos como parámetros, por ejemplo:
    ```
    tarjeta.html?to=Ana&from=Luis&msg=Feliz+21+de+septiembre&flor=tulipan

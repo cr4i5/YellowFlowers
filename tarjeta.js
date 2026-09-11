@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var VALID_FLOWERS = ["girasol", "margarita", "tulipan", "orquidea"];
+  var VALID_FLOWERS = ["girasol", "rosa", "tulipan", "orquidea"];
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function spawnPetals (layerId, count) {
@@ -35,6 +35,8 @@
   if (msg) document.getElementById("c-msg").textContent = msg;
   document.getElementById("c-from").textContent = from ? ("— " + from) : "";
   document.getElementById("flower-use").setAttribute("href", "#flor-" + flor);
+  document.getElementById("spray-tl-use").setAttribute("href", "#flor-" + flor);
+  document.getElementById("spray-br-use").setAttribute("href", "#flor-" + flor);
   document.title = (from ? from + " te envió" : "Alguien te envió") + " una flor amarilla";
 
   var card = document.getElementById("card");

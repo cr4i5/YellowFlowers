@@ -174,18 +174,38 @@ nav.top{ padding: 26px 0 4px; }
 }
 .card > *{ position: relative; z-index: 2; }
 .card .petals-layer{ position: absolute; inset: 0; z-index: 3; overflow: hidden; pointer-events: none; }
+
+.card-corner{ position: absolute; width: 58px; height: 58px; opacity: .65; z-index: 2; }
+.card-corner.tl{ top: 12px; left: 12px; }
+.card-corner.tr{ top: 12px; right: 12px; transform: scaleX(-1); }
+.card-corner.bl{ bottom: 12px; left: 12px; transform: scaleY(-1); }
+.card-corner.br{ bottom: 12px; right: 12px; transform: scale(-1,-1); }
+
+.card-spray{
+  position: absolute; z-index: 3; width: 150px; pointer-events: none;
+  filter: drop-shadow(0 12px 18px rgba(0,0,0,.4));
+}
+.card-spray svg{ width: 100%; height: auto; }
+.card-spray.tl{ top: -44px; left: -40px; transform: rotate(-28deg); }
+.card-spray.br{ bottom: -48px; right: -36px; transform: rotate(156deg); }
+
+.ornament-divider{ display: block; width: 200px; max-width: 78%; height: auto; margin: 0 auto; opacity: .85; }
+.card-to{ margin: 14px 0; }
+.card-flower + .ornament-divider{ margin-top: 2px; margin-bottom: 12px; }
+.card-to + .ornament-divider{ margin-top: 2px; margin-bottom: 18px; }
+
 .card-ornament{
-  width: 34px; height: 12px; margin: 0 auto 12px;
+  width: 34px; height: 12px; margin: 4px auto 12px;
   opacity: .6;
 }
 .card-ornament svg{ width: 100%; height: 100%; }
-.card-flower{ width: 122px; margin: 0 auto 16px; filter: drop-shadow(0 10px 12px rgba(113,68,18,.22)); }
+.card-flower{ width: 122px; margin: 0 auto 4px; filter: drop-shadow(0 10px 12px rgba(113,68,18,.22)); }
 .card-flower svg{ width: 100%; height: auto; }
-.card-to{ font-family: 'Fraunces', serif; font-size: 1.42rem; color: #694617; margin-bottom: 14px; }
+.card-to{ font-family: 'Fraunces', serif; font-size: 1.42rem; color: #694617; }
 .card-msg{
   font-family: 'Fraunces', serif; font-style: italic;
   font-size: 1.2rem; line-height: 1.6;
-  max-width: 38ch; margin: 0 auto 20px; white-space: pre-wrap;
+  max-width: 38ch; margin: 4px auto 20px; white-space: pre-wrap;
 }
 .card-from{ color: var(--ink-soft); font-size: 1rem; }
 
@@ -288,17 +308,54 @@ footer a:hover{ text-decoration: underline; }
   display: flex; align-items: center; justify-content: center;
   padding: 40px 20px;
   background:
-    radial-gradient(circle at 50% 40%, rgba(255,211,102,.09), transparent 30%),
-    linear-gradient(180deg, #0d1c12 0%, #102518 55%, #0a1710 100%);
+    radial-gradient(circle at 50% 40%, rgba(255,211,102,.06), transparent 30%),
+    linear-gradient(180deg, #060d07 0%, #0a1810 55%, #050a06 100%);
+}
+/* Oscurece y desenfoca todo detrás de la tarjeta para que sea el único enfoque */
+.tarjeta-page::before{
+  content: "";
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 46%, transparent 22%, rgba(3,7,4,.72) 76%);
+}
+
+.card-stack{ position: relative; width: min(94vw, 760px); z-index: 5; }
+.card-stack::before{
+  content: "";
+  position: absolute;
+  inset: 16px -12px -16px 12px;
+  background: linear-gradient(135deg, #e9d9b0, #d2b984);
+  border-radius: 24px 8px 26px 10px;
+  transform: rotate(2.2deg);
+  box-shadow: 0 28px 65px rgba(0,0,0,.5);
+  z-index: -1;
+}
+.card-stack::after{
+  content: "";
+  position: absolute;
+  width: 64px; height: 170%;
+  top: -35%; left: 50%;
+  background: linear-gradient(180deg, #f1cf72, #c9962c);
+  transform: translateX(-50%) rotate(17deg);
+  opacity: .9;
+  z-index: -2;
+  box-shadow: 0 14px 34px rgba(0,0,0,.35);
 }
 .tarjeta-page .card{
-  width: min(92vw, 620px);
-  z-index: 5;
+  width: 100%;
+  padding: 74px 58px 58px;
   box-shadow:
     0 35px 90px rgba(0,0,0,.55),
     0 0 0 1px rgba(255,218,133,.09),
     inset 0 1px rgba(255,255,255,.65);
 }
+.tarjeta-page .card-flower{ width: 150px; }
+.tarjeta-page .card-to{ font-size: 1.75rem; }
+.tarjeta-page .card-msg{ font-size: 1.36rem; max-width: 34ch; }
+.tarjeta-page .ornament-divider{ width: 240px; }
+.tarjeta-page .card-corner{ width: 70px; height: 70px; }
+.tarjeta-page .card-spray{ width: 190px; }
+.tarjeta-page .card-spray.tl{ top: -56px; left: -50px; }
+.tarjeta-page .card-spray.br{ bottom: -60px; right: -46px; }
 .card.card-pending{ opacity: 0; transform: translateY(24px) scale(.94) rotate(-1deg); }
 .card.card-reveal{ animation: card-in .95s cubic-bezier(.18,.9,.25,1) forwards; }
 @keyframes card-in{
@@ -315,6 +372,7 @@ footer a:hover{ text-decoration: underline; }
   height: 46vh; min-height: 260px; max-height: 430px;
   pointer-events: none;
   overflow: hidden;
+  filter: blur(3px) brightness(.6) saturate(.9);
   mask-image: linear-gradient(to top, black 0%, black 55%, transparent 100%);
   -webkit-mask-image: linear-gradient(to top, black 0%, black 55%, transparent 100%);
 }
@@ -366,6 +424,17 @@ footer a:hover{ text-decoration: underline; }
   .form-actions{ flex-direction: column; }
   .flower-meadow{ height: 34vh; min-height: 200px; }
   .meadow-flower{ bottom: -30px; }
+  .tarjeta-page .card{ padding: 52px 26px 40px; }
+  .tarjeta-page .card-flower{ width: 105px; }
+  .tarjeta-page .card-to{ font-size: 1.4rem; }
+  .tarjeta-page .card-msg{ font-size: 1.08rem; max-width: 26ch; }
+  .tarjeta-page .ornament-divider{ width: 170px; }
+  .tarjeta-page .card-corner{ width: 44px; height: 44px; }
+  .tarjeta-page .card-spray{ width: 110px; }
+  .tarjeta-page .card-spray.tl{ top: -30px; left: -26px; }
+  .tarjeta-page .card-spray.br{ bottom: -34px; right: -24px; }
+  .card-stack::before{ inset: 10px -8px -10px 8px; }
+  .card-stack::after{ width: 40px; }
 }
 
 /* ---------- MOVIMIENTO REDUCIDO ---------- */

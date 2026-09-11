@@ -61,6 +61,8 @@
   var pFrom = document.getElementById("p-from");
   var pMsg = document.getElementById("p-msg");
   var pFlowerUse = document.getElementById("preview-flower-use");
+  var pSprayTl = document.getElementById("p-spray-tl-use");
+  var pSprayBr = document.getElementById("p-spray-br-use");
 
   function selectedFlower () {
     var checked = document.querySelector('input[name="flor"]:checked');
@@ -71,7 +73,10 @@
     pTo.textContent = toInput.value.trim() || "alguien especial";
     pFrom.textContent = fromInput.value.trim() ? ("— " + fromInput.value.trim()) : "— Tú";
     pMsg.textContent = msgInput.value.trim() || "Escribe algo bonito a la izquierda y va a aparecer aquí, como si ya estuviera escrito en papel.";
-    pFlowerUse.setAttribute("href", "#flor-" + selectedFlower());
+    var href = "#flor-" + selectedFlower();
+    pFlowerUse.setAttribute("href", href);
+    pSprayTl.setAttribute("href", href);
+    pSprayBr.setAttribute("href", href);
   }
   [toInput, fromInput, msgInput].forEach(function (el) {
     el.addEventListener("input", refreshPreview);

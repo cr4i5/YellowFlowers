@@ -40,6 +40,32 @@
   document.title = (from ? from + " te envió" : "Alguien te envió") + " una flor amarilla";
 
   var card = document.getElementById("card");
+  var cardStack = document.querySelector(".card-stack");
+  var continueBtn = document.getElementById("continue-btn");
+  var downloadBtn = document.getElementById("download-btn");
+  var surprise = document.getElementById("surprise-screen");
+
+  function showSurprise () {
+    if (!cardStack || !surprise) return;
+    cardStack.classList.add("is-flying");
+    window.setTimeout(function () {
+      surprise.classList.add("is-visible");
+      surprise.setAttribute("aria-hidden", "false");
+    }, 900);
+  }
+
+  if (continueBtn) {
+    continueBtn.addEventListener("click", showSurprise);
+  }
+
+  // Abre el diálogo de impresión para guardar la carta como PDF.
+  if (downloadBtn) {
+    downloadBtn.addEventListener("click", function () {
+      window.print();
+    });
+  }
+
+
 
   /* ---------- Campo de flores ---------- */
   var meadow = document.getElementById("flower-meadow");

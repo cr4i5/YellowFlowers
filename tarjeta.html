@@ -114,6 +114,12 @@
   <div class="flower-meadow" id="flower-meadow" aria-hidden="true"></div>
 
   <div class="card-stack">
+  <div class="card-ribbon" aria-hidden="true">
+    <span class="ribbon-band"></span>
+    <span class="ribbon-knot"></span>
+    <span class="ribbon-tail ribbon-tail-left"></span>
+    <span class="ribbon-tail ribbon-tail-right"></span>
+  </div>
   <div class="card card-pending" id="card">
     <div class="petals-layer" id="petals"></div>
 
@@ -143,8 +149,27 @@
       <svg viewBox="0 0 60 20"><use href="#ornament-flourish"></use></svg>
     </div>
     <p class="card-from" id="c-from"></p>
+
+    <div class="card-actions" id="card-actions">
+      <button class="card-action primary" id="continue-btn" type="button">
+        Continuar <span aria-hidden="true">→</span>
+      </button>
+      <button class="card-action secondary" id="download-btn" type="button">
+        Descargar carta
+      </button>
+    </div>
   </div>
   </div>
+  <section class="surprise-screen" id="surprise-screen" aria-hidden="true">
+    <div class="surprise-glow"></div>
+    <div class="surprise-content">
+      <div class="surprise-flower">✿</div>
+      <p class="surprise-eyebrow">Y ahora...</p>
+      <h1>Mira detrás del monitor.</h1>
+      <p class="surprise-text">Hay algo esperándote ahí. 🌻</p>
+      <div class="surprise-sparkles" aria-hidden="true">✦　✧　✦</div>
+    </div>
+  </section>
 </main>
 
 <script src="tarjeta.js"></script>

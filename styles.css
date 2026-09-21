@@ -329,17 +329,65 @@ footer a:hover{ text-decoration: underline; }
   box-shadow: 0 28px 65px rgba(0,0,0,.5);
   z-index: -1;
 }
-.card-stack::after{
-  content: "";
-  position: absolute;
-  width: 64px; height: 170%;
-  top: -35%; left: 50%;
-  background: linear-gradient(180deg, #f1cf72, #c9962c);
-  transform: translateX(-50%) rotate(17deg);
-  opacity: .9;
-  z-index: -2;
-  box-shadow: 0 14px 34px rgba(0,0,0,.35);
+.card-stack::after{ content: none; }
+
+/* Listón de regalo: banda ancha sobre el borde superior, nudo y colas */
+.card-ribbon{
+  position:absolute;
+  top: 18px;
+  left: -2px;
+  right: -2px;
+  height: 92px;
+  z-index: 8;
+  pointer-events:none;
 }
+.ribbon-band{
+  position:absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background:
+    linear-gradient(180deg,
+      #ffe7a1 0%,
+      #f0c65c 45%,
+      #c9902b 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,249,210,.8),
+    inset 0 -2px 0 rgba(145,91,16,.22),
+    0 7px 16px rgba(77,45,9,.22);
+  border-radius: 4px 4px 10px 10px;
+}
+.ribbon-knot{
+  position:absolute;
+  top: 24px;
+  left:50%;
+  width: 46px;
+  height: 36px;
+  transform: translate(-50%,-50%) rotate(45deg);
+  border-radius: 9px 16px 9px 16px;
+  background: linear-gradient(135deg,#ffe8a5,#d39a2f);
+  box-shadow: 0 8px 18px rgba(82,49,12,.28), inset 0 0 0 1px rgba(255,246,201,.45);
+}
+.ribbon-tail{
+  position:absolute;
+  top: 32px;
+  width: 96px;
+  height: 68px;
+  background: linear-gradient(145deg,#f6d77c,#c48b27);
+  filter: drop-shadow(0 8px 8px rgba(77,45,9,.2));
+}
+.ribbon-tail-left{
+  left: calc(50% - 112px);
+  transform: rotate(24deg);
+  clip-path: polygon(0 15%,100% 0,78% 100%,53% 65%,28% 100%);
+}
+.ribbon-tail-right{
+  right: calc(50% - 112px);
+  transform: rotate(-24deg);
+  clip-path: polygon(0 0,100% 15%,72% 100%,47% 65%,22% 100%);
+}
+
 .tarjeta-page .card{
   width: 100%;
   padding: 74px 58px 58px;
@@ -410,6 +458,117 @@ footer a:hover{ text-decoration: underline; }
   75%     { margin-left: 6px;  transform: rotate(calc(var(--flower-rot) + 2deg)); }
 }
 
+
+.card-actions{
+  position:relative;
+  z-index:12;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:26px auto 0;
+}
+.card-action{
+  border:0;
+  border-radius:999px;
+  padding:13px 22px;
+  font-family:'Karla',sans-serif;
+  font-weight:700;
+  font-size:.95rem;
+  cursor:pointer;
+  transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.card-action:hover{ transform:translateY(-3px); }
+.card-action.primary{
+  color:#fff8df;
+  background:linear-gradient(135deg,#8c5a16,#c38a28);
+  box-shadow:0 10px 22px rgba(109,65,13,.24);
+}
+.card-action.secondary{
+  color:#6d491b;
+  background:rgba(255,250,229,.72);
+  border:1px solid rgba(157,103,28,.28);
+}
+.card-action:focus-visible{ outline:3px solid rgba(255,214,110,.65); outline-offset:3px; }
+
+.card-stack.is-flying{
+  animation:card-fly-away 1.35s cubic-bezier(.65,0,.9,.35) forwards;
+}
+.card-stack.is-flying .card-ribbon{ opacity:0; }
+@keyframes card-fly-away{
+  0%{ transform:translate3d(0,0,0) rotate(0deg) scale(1); opacity:1; }
+  38%{ transform:translate3d(-15px,-38px,0) rotate(-4deg) scale(1.03); opacity:1; }
+  100%{ transform:translate3d(0,-120vh,0) rotate(18deg) scale(.45); opacity:0; }
+}
+
+.surprise-screen{
+  position:absolute;
+  inset:0;
+  z-index:10;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:30px;
+  text-align:center;
+  opacity:0;
+  visibility:hidden;
+  background:
+    radial-gradient(circle at 50% 46%,rgba(255,211,102,.15),transparent 24%),
+    linear-gradient(180deg,rgba(4,12,6,.25),rgba(5,12,7,.92));
+  transition:opacity .7s ease, visibility .7s ease;
+}
+.surprise-screen.is-visible{ opacity:1; visibility:visible; }
+.surprise-content{
+  position:relative;
+  max-width:720px;
+  transform:translateY(24px) scale(.94);
+  transition:transform 1s cubic-bezier(.18,.9,.25,1);
+}
+.surprise-screen.is-visible .surprise-content{ transform:translateY(0) scale(1); }
+.surprise-eyebrow{
+  margin:0 0 10px;
+  color:#f0c65d;
+  text-transform:uppercase;
+  letter-spacing:.24em;
+  font-size:.8rem;
+  font-weight:700;
+}
+.surprise-content h1{
+  margin:0;
+  color:#fff4d2;
+  font-family:'Fraunces',serif;
+  font-size:clamp(2.3rem,7vw,5.2rem);
+  line-height:1.02;
+  text-shadow:0 8px 35px rgba(0,0,0,.4);
+}
+.surprise-text{
+  margin:20px 0 0;
+  color:rgba(250,244,224,.86);
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:clamp(1.15rem,3vw,1.55rem);
+}
+.surprise-flower{
+  margin:0 auto 16px;
+  width:74px;height:74px;
+  display:grid;place-items:center;
+  color:#f4c64e;
+  font-size:3.6rem;
+  filter:drop-shadow(0 0 20px rgba(244,198,78,.28));
+  animation:surprise-bloom 1.8s ease-in-out infinite;
+}
+@keyframes surprise-bloom{
+  0%,100%{transform:scale(.92) rotate(-4deg)}
+  50%{transform:scale(1.08) rotate(4deg)}
+}
+.surprise-sparkles{
+  margin-top:28px;
+  color:#e7b63f;
+  opacity:.75;
+  letter-spacing:.3em;
+}
+
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 600px){
   .hero{ padding-top: 50px; }
@@ -434,7 +593,12 @@ footer a:hover{ text-decoration: underline; }
   .tarjeta-page .card-spray.tl{ top: -30px; left: -26px; }
   .tarjeta-page .card-spray.br{ bottom: -34px; right: -24px; }
   .card-stack::before{ inset: 10px -8px -10px 8px; }
-  .card-stack::after{ width: 40px; }
+  .card-ribbon{ top:12px; height:72px; }
+  .ribbon-band{ height:38px; }
+  .ribbon-tail{ width:66px; height:48px; top:26px; }
+  .ribbon-tail-left{ left:calc(50% - 78px); }
+  .ribbon-tail-right{ right:calc(50% - 78px); }
+  .ribbon-knot{ width:34px;height:28px; top:19px; }
 }
 
 /* ---------- MOVIMIENTO REDUCIDO ---------- */
@@ -448,4 +612,20 @@ footer a:hover{ text-decoration: underline; }
   .card.card-pending{ opacity: 1; transform: none; }
   .flower-meadow{ opacity: .55; }
   .meadow-flower{ animation: none !important; transform: rotate(var(--flower-rot)) !important; }
+}
+
+@media print{
+  @page{ size:auto; margin:12mm; }
+  body{ background:#fff !important; }
+  .tarjeta-page{ min-height:auto; padding:0; background:#fff; overflow:visible; }
+  .tarjeta-page::before,.flower-meadow,.card-ribbon,.card-actions,.surprise-screen{ display:none !important; }
+  .card-stack{ width:100%; }
+  .card-stack::before{ box-shadow:none; }
+  .tarjeta-page .card{
+    opacity:1 !important;
+    transform:none !important;
+    animation:none !important;
+    box-shadow:none;
+    break-inside:avoid;
+  }
 }
